@@ -28,6 +28,29 @@ cancion2.volume = 0.55;
 
 
 /* =========================================================
+   ACTIVAR PRIMERA CANCIÓN CON CUALQUIER CLIC
+========================================================= */
+
+document.addEventListener("click", function () {
+
+    if (cancion1.paused) {
+
+        cancion1.play().then(function () {
+
+            console.log("Canción 1 iniciada.");
+
+        }).catch(function (error) {
+
+            console.log("No se pudo reproducir la canción 1:", error);
+
+        });
+
+    }
+
+});
+
+
+/* =========================================================
    ENTRAR A LA SEGUNDA PANTALLA
 ========================================================= */
 
@@ -38,9 +61,11 @@ entrar.addEventListener("click", function () {
     cancion1.pause();
     cancion1.currentTime = 0;
 
+
     /* preparar canción 2 */
 
     cancion2.currentTime = 0;
+
 
     /* animación de salida */
 
@@ -68,7 +93,7 @@ entrar.addEventListener("click", function () {
         cancion2.play().catch(function () {
 
             console.log(
-                "El navegador necesita interacción para reproducir el audio."
+                "No se pudo reproducir la canción 2."
             );
 
         });
@@ -131,7 +156,7 @@ volver.addEventListener("click", function () {
         cancion1.play().catch(function () {
 
             console.log(
-                "Autoplay bloqueado por el navegador."
+                "No se pudo reproducir la canción 1."
             );
 
         });
@@ -267,35 +292,11 @@ function crearParticulas() {
 
 
 /* =========================================================
-   AUTOPLAY
-========================================================= */
-
-/* =========================================================
-   AUTOPLAY AL PRIMER CLIC
+   INICIO
 ========================================================= */
 
 window.addEventListener("load", function () {
 
-    /* Crear partículas desde el inicio */
     crearParticulas();
 
 });
-
-
-/* =========================================================
-   ACTIVAR MÚSICA CON CUALQUIER CLIC
-========================================================= */
-
-document.addEventListener("click", function () {
-
-    if (cancion1.paused && !principal.classList.contains("entrada")) {
-
-        cancion1.play().catch(function () {
-
-            console.log("No se pudo reproducir la canción.");
-
-        });
-
-    }
-
-}, { once: true });
