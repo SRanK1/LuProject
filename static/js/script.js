@@ -28,26 +28,50 @@ cancion2.volume = 0.55;
 
 
 /* =========================================================
-   ACTIVAR PRIMERA CANCIÓN CON CUALQUIER CLIC
+   INICIAR MÚSICA CON CUALQUIER INTERACCIÓN
 ========================================================= */
 
-document.addEventListener("click", function () {
+let musicaIniciada = false;
 
-    if (cancion1.paused) {
+function activarMusica() {
 
-        cancion1.play().then(function () {
+    if (musicaIniciada) return;
 
-            console.log("Canción 1 iniciada.");
+    musicaIniciada = true;
 
-        }).catch(function (error) {
+    cancion1.play()
+        .then(function () {
 
-            console.log("No se pudo reproducir la canción 1:", error);
+            console.log("🎵 Canción 1 iniciada");
+
+        })
+        .catch(function (error) {
+
+            musicaIniciada = false;
+
+            console.log(
+                "No se pudo iniciar la canción:",
+                error
+            );
 
         });
+}
 
+
+/*
+   pointerdown ocurre antes que click.
+   Esto permite iniciar la música antes de que
+   el botón "ENTRA AQUÍ" ejecute su función.
+*/
+
+document.addEventListener(
+    "pointerdown",
+    activarMusica,
+    {
+        once: true,
+        capture: true
     }
-
-});
+);
 
 
 /* =========================================================
@@ -56,30 +80,30 @@ document.addEventListener("click", function () {
 
 entrar.addEventListener("click", function () {
 
-    /* detener canción 1 */
+    /* Detener canción 1 */
 
     cancion1.pause();
     cancion1.currentTime = 0;
 
 
-    /* preparar canción 2 */
+    /* Preparar canción 2 */
 
     cancion2.currentTime = 0;
 
 
-    /* animación de salida */
+    /* Animación de salida */
 
     inicio.classList.add("salida");
 
 
     setTimeout(function () {
 
-        /* ocultar inicio */
+        /* Ocultar inicio */
 
         inicio.classList.add("oculto");
 
 
-        /* mostrar segunda pantalla */
+        /* Mostrar segunda pantalla */
 
         principal.classList.remove("oculto");
 
@@ -88,18 +112,19 @@ entrar.addEventListener("click", function () {
         principal.classList.add("entrada");
 
 
-        /* reproducir segunda canción */
+        /* Reproducir canción 2 */
 
-        cancion2.play().catch(function () {
+        cancion2.play().catch(function (error) {
 
             console.log(
-                "No se pudo reproducir la canción 2."
+                "No se pudo reproducir la canción 2:",
+                error
             );
 
         });
 
 
-        /* crear partículas */
+        /* Crear partículas */
 
         crearParticulas();
 
@@ -114,26 +139,25 @@ entrar.addEventListener("click", function () {
 
 volver.addEventListener("click", function () {
 
-    /* detener canción 2 */
+    /* Detener canción 2 */
 
     cancion2.pause();
-
     cancion2.currentTime = 0;
 
 
-    /* preparar canción 1 */
+    /* Preparar canción 1 */
 
     cancion1.currentTime = 0;
 
 
-    /* animación de salida */
+    /* Animación de salida */
 
     principal.classList.add("salida");
 
 
     setTimeout(function () {
 
-        /* ocultar segunda pantalla */
+        /* Ocultar segunda pantalla */
 
         principal.classList.add("oculto");
 
@@ -142,7 +166,7 @@ volver.addEventListener("click", function () {
         principal.classList.remove("salida");
 
 
-        /* mostrar inicio */
+        /* Mostrar inicio */
 
         inicio.classList.remove("oculto");
 
@@ -151,12 +175,13 @@ volver.addEventListener("click", function () {
         inicio.classList.add("entrada-inicio");
 
 
-        /* reproducir primera canción */
+        /* Reproducir canción 1 */
 
-        cancion1.play().catch(function () {
+        cancion1.play().catch(function (error) {
 
             console.log(
-                "No se pudo reproducir la canción 1."
+                "No se pudo reproducir la canción 1:",
+                error
             );
 
         });
@@ -292,7 +317,7 @@ function crearParticulas() {
 
 
 /* =========================================================
-   INICIO
+   CARGAR PÁGINA
 ========================================================= */
 
 window.addEventListener("load", function () {
