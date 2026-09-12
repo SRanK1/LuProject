@@ -270,20 +270,32 @@ function crearParticulas() {
    AUTOPLAY
 ========================================================= */
 
+/* =========================================================
+   AUTOPLAY AL PRIMER CLIC
+========================================================= */
+
 window.addEventListener("load", function () {
 
     /* Crear partículas desde el inicio */
     crearParticulas();
 
-
-    /* Intentar reproducir la primera canción */
-
-    cancion1.play().catch(function () {
-
-        console.log(
-            "Autoplay bloqueado por el navegador."
-        );
-
-    });
-
 });
+
+
+/* =========================================================
+   ACTIVAR MÚSICA CON CUALQUIER CLIC
+========================================================= */
+
+document.addEventListener("click", function () {
+
+    if (cancion1.paused && !principal.classList.contains("entrada")) {
+
+        cancion1.play().catch(function () {
+
+            console.log("No se pudo reproducir la canción.");
+
+        });
+
+    }
+
+}, { once: true });
