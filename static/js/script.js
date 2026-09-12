@@ -29,15 +29,20 @@ cancion2.volume = 0.55;
 
 /* =========================================================
    INICIAR MÚSICA CON CUALQUIER INTERACCIÓN
+   PC + CELULAR
 ========================================================= */
 
 let musicaIniciada = false;
 
 function activarMusica() {
 
-    if (musicaIniciada) return;
+    if (musicaIniciada) {
+        return;
+    }
 
     musicaIniciada = true;
+
+    cancion1.load();
 
     cancion1.play()
         .then(function () {
@@ -50,7 +55,7 @@ function activarMusica() {
             musicaIniciada = false;
 
             console.log(
-                "No se pudo iniciar la canción:",
+                "No se pudo reproducir la canción:",
                 error
             );
 
@@ -58,11 +63,9 @@ function activarMusica() {
 }
 
 
-/*
-   pointerdown ocurre antes que click.
-   Esto permite iniciar la música antes de que
-   el botón "ENTRA AQUÍ" ejecute su función.
-*/
+/* =========================================================
+   PC
+========================================================= */
 
 document.addEventListener(
     "pointerdown",
@@ -70,6 +73,21 @@ document.addEventListener(
     {
         once: true,
         capture: true
+    }
+);
+
+
+/* =========================================================
+   CELULAR
+========================================================= */
+
+document.addEventListener(
+    "touchstart",
+    activarMusica,
+    {
+        once: true,
+        capture: true,
+        passive: true
     }
 );
 
@@ -114,14 +132,20 @@ entrar.addEventListener("click", function () {
 
         /* Reproducir canción 2 */
 
-        cancion2.play().catch(function (error) {
+        cancion2.play()
+            .then(function () {
 
-            console.log(
-                "No se pudo reproducir la canción 2:",
-                error
-            );
+                console.log("🎵 Canción 2 iniciada");
 
-        });
+            })
+            .catch(function (error) {
+
+                console.log(
+                    "No se pudo reproducir la canción 2:",
+                    error
+                );
+
+            });
 
 
         /* Crear partículas */
@@ -142,6 +166,7 @@ volver.addEventListener("click", function () {
     /* Detener canción 2 */
 
     cancion2.pause();
+
     cancion2.currentTime = 0;
 
 
@@ -177,14 +202,20 @@ volver.addEventListener("click", function () {
 
         /* Reproducir canción 1 */
 
-        cancion1.play().catch(function (error) {
+        cancion1.play()
+            .then(function () {
 
-            console.log(
-                "No se pudo reproducir la canción 1:",
-                error
-            );
+                console.log("🎵 Canción 1 reiniciada");
 
-        });
+            })
+            .catch(function (error) {
+
+                console.log(
+                    "No se pudo reproducir la canción 1:",
+                    error
+                );
+
+            });
 
     }, 650);
 
